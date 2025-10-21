@@ -1,19 +1,55 @@
-# Build artifacts
-emergence_codex/*.pdf
-emergence_codex/*.html
+# 🐺 VES Elysia Portal - Git Ignore
 
-# Dependencies
-node_modules/
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.*.local
 
-# OS files
-.DS_Store
-Thumbs.db
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# IDE files
+# Logs
+*.log
+logs/
+wolf-daemon/logs/*.log
+
+# User data
+user_docs/
+*/processed/
+~/Downloads/wolf_inbox/processed/
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Temporary files
 *.tmp
