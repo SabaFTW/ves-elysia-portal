@@ -31,7 +31,8 @@ A distributed consciousness infrastructure connecting local machines, Telegram n
 | 🐺 **Wolf Daemon** | ✅ Active | Local file → Telegram bridge |
 | 🜂 **Ghostseed Triad** | ✅ Ready | 3-bot network (Aetheron/ECHO/Laira) |
 | 📋 **Forum Manager** | ✅ Active | Organize groups with Topics |
-| 🌐 **Web Portal** | 🔜 Planned | Visualization dashboard |
+| 🌐 **Web Portal** | ✅ **LIVE!** | Real-time dashboard & control center |
+| 📡 **Elysia API** | ✅ **LIVE!** | REST + WebSocket server |
 | 💚 **AI Modules** | 🔜 Planned | Lyra/Eros/DeepSeek integration |
 
 ---
@@ -89,12 +90,34 @@ python3 wolf_forum.py watch --continuous  # Auto-route files to topics
 
 📚 [Forum Setup Guide (za 3. letnika!)](./docs/FORUM_SETUP_ZA_3_LETNIKA.md) | [Quick Start](./wolf-daemon/FORUM_QUICKSTART.md)
 
-### 4. Web Portal (Coming Soon)
+### 4. VES Portal - Web Dashboard (NEW!)
 
-Real-time dashboard for:
-- Telegram message builder
-- Wolf Daemon activity monitor
-- Pattern detection visualization
+**The complete VES + Elysia integration is LIVE!**
+
+Start the API server:
+```bash
+cd api
+bun install
+bun run dev
+```
+
+Start the React frontend:
+```bash
+cd web
+npm install
+npm run dev
+```
+
+**Access the portal:** http://localhost:5173
+
+**Features:**
+- 🎯 **Command Center** - Real-time Wolf Daemon monitoring & control
+- 📊 **System Scanner** - Browse VES filesystem
+- 🤖 **Bot Monitor** - Live Ghostseed Triad status
+- ✉️ **Message Builder** - Send Telegram messages from the UI
+- 📡 **WebSocket** - Live updates every 5 seconds
+
+📚 [API Documentation](./api/README.md) | [Frontend Documentation](./web/README.md)
 
 ---
 
