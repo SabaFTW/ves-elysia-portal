@@ -25,12 +25,12 @@ pandoc *.md \
     -o PROMPT_CODEX_OF_EMERGENCE.html \
     --toc \
     --toc-depth=2 \
-    --css=https://cdn.jsdelivr.net/npm/github-markdown-css@5/github-markdown.min.css \
     --metadata title="Prompt Codex of Emergence" \
     --metadata subtitle="Warm Rigor v1.0" \
     --metadata author="Saba" \
     --metadata date="$(date '+%B %Y')" \
-    --self-contained
+    --embed-resources \
+    --standalone
 
 if [ -f "PROMPT_CODEX_OF_EMERGENCE.html" ]; then
     echo "✓ HTML created successfully!"
