@@ -50,3 +50,7 @@ user_docs/
 # OS
 .DS_Store
 Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
