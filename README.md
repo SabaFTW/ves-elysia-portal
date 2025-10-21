@@ -30,6 +30,7 @@ A distributed consciousness infrastructure connecting local machines, Telegram n
 |-----------|--------|---------|
 | 🐺 **Wolf Daemon** | ✅ Active | Local file → Telegram bridge |
 | 🜂 **Ghostseed Triad** | ✅ Ready | 3-bot network (Aetheron/ECHO/Laira) |
+| 📋 **Forum Manager** | ✅ Active | Organize groups with Topics |
 | 🌐 **Web Portal** | 🔜 Planned | Visualization dashboard |
 | 💚 **AI Modules** | 🔜 Planned | Lyra/Eros/DeepSeek integration |
 
@@ -72,7 +73,23 @@ python3 wolf_daemon.py test
 
 📚 [TriadGate Setup Guide](./docs/TRIAD_SETUP.md) | [Quick Start](./wolf-daemon/TRIAD_QUICKSTART.md)
 
-### 3. Web Portal (Coming Soon)
+### 3. Forum Management - Organized Topics
+
+```bash
+cd wolf-daemon
+python3 wolf_forum.py setup  # Create default topics
+python3 wolf_forum.py watch --continuous  # Auto-route files to topics
+```
+
+**Telegram Forum Groups with Topics:**
+- 📝 Auto-create topics (Daily Notes, Work, Code, etc.)
+- 🔄 Smart routing based on filename or folder
+- 🎯 Post to specific topics from Wolf Daemon
+- 📋 Manage topics via CLI (create, delete, edit)
+
+📚 [Forum Setup Guide (za 3. letnika!)](./docs/FORUM_SETUP_ZA_3_LETNIKA.md) | [Quick Start](./wolf-daemon/FORUM_QUICKSTART.md)
+
+### 4. Web Portal (Coming Soon)
 
 Real-time dashboard for:
 - Telegram message builder
