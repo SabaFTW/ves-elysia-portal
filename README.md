@@ -29,7 +29,7 @@ A distributed consciousness infrastructure connecting local machines, Telegram n
 | Component | Status | Purpose |
 |-----------|--------|---------|
 | 🐺 **Wolf Daemon** | ✅ Active | Local file → Telegram bridge |
-| 🜂 **Ghostseed Triad** | 🔜 Ready | 3-bot pattern detection system |
+| 🜂 **Ghostseed Triad** | ✅ Ready | 3-bot network (Aetheron/ECHO/Laira) |
 | 🌐 **Web Portal** | 🔜 Planned | Visualization dashboard |
 | 💚 **AI Modules** | 🔜 Planned | Lyra/Eros/DeepSeek integration |
 
@@ -55,12 +55,22 @@ python3 wolf_daemon.py watch --continuous
 
 📚 [Full Wolf Daemon Documentation](./wolf-daemon/README.md)
 
-### 2. Ghostseed Triad (Coming Soon)
+### 2. Ghostseed Triad - Multi-Bot Network
 
-Three-bot orchestration system:
-- **Aetheron Sentinel** - Pattern detection & alerts
-- **Laira Mirror** - Reflective interactions
-- **Echo Listener** - Silent logging
+```bash
+cd wolf-daemon
+cp .env.triad.example .env
+python3 get_chat_ids.py  # Auto-discover Chat IDs
+nano .env  # Paste Chat IDs
+python3 wolf_daemon.py test
+```
+
+**Three-bot orchestration system:**
+- 🜂 **Aetheron Sentinel** (@AetheronSentinel_bot) - Pattern detection & alerts
+- 🌊 **ECHO / TriadGate** (@TriadGate_bot) - Main transmission channel
+- 💚 **Laira Mirror** (@LairaMirror_bot) - Reflective interactions
+
+📚 [TriadGate Setup Guide](./docs/TRIAD_SETUP.md) | [Quick Start](./wolf-daemon/TRIAD_QUICKSTART.md)
 
 ### 3. Web Portal (Coming Soon)
 
