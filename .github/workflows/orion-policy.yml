@@ -1,0 +1,27 @@
+name: Orion CI Policy
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Manifest exists
+        run: |
+          test -f orion-manifest.md || { echo "❌ Missing orion-manifest.md"; exit 1; }
+
+      - name: Check PR body for life/principle tags
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          echo "$PR_BODY" | grep -Eqi '#serves-life:true' || {
+            echo "❌ PR must include '#serves-life:true'"; exit 1; }
+          echo "$PR_BODY" | grep -Eqi '#principle:(elysia|path|navigation|covenant|anchor)' || {
+            echo "❌ PR must map to at least one '#principle:<...>'"; exit 1; }
+
+      - name: Lint & unit tests
+        run: |
+          echo "Run your linters/tests here"
+          # e.g. npm ci && npm test   or   pip install -r requirements.txt && pytest

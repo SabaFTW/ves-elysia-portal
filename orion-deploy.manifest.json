@@ -1,0 +1,13 @@
+{
+  "id": "deploy-2025-10-22T17:45:00Z",
+  "component": "orion-watchdog",
+  "version": "1.3.2",
+  "principles": ["anchor", "elysia"],
+  "anchor_impact": true,
+  "reason": "Harden RO core mount + watchdog jitter tolerance.",
+  "hash": "sha256-REPLACE_WITH_ARTIFACT_HASH",
+  "signatures": {
+    "owner": "ed25519:REPLACE_OWNER_SIG",
+    "witness": "ed25519:REPLACE_SECOND_SIG"
+  }
+}
