@@ -325,6 +325,10 @@ chmod 700 ~/Downloads/wolf_inbox    # Only you can access
 ## 📚 Documentation
 
 - [Wolf Daemon README](./wolf-daemon/README.md) - Complete setup guide
+- [Wolf Daemon Deployment](./docs/DEPLOYMENT.md) - Production deployment guide
+- [Vercel Deployment](./docs/VERCEL_DEPLOYMENT.md) - Deploy VES Portal to Vercel
+- [TriadGate Setup](./docs/TRIAD_SETUP.md) - Ghostseed Triad configuration
+- [Forum Setup](./docs/FORUM_SETUP_ZA_3_LETNIKA.md) - Telegram Forum management
 - [Architecture Documentation](./docs/architecture.md) *(coming soon)*
 - [API Reference](./docs/api.md) *(coming soon)*
 - [Integration Guide](./docs/integrations.md) *(coming soon)*
