@@ -13,15 +13,40 @@
 
 ## Quick Start
 
+### New Repository
 ```bash
-git init
-git add .
-cp hooks/pre-commit .git/hooks/
-chmod +x .git/hooks/pre-commit
-git commit -m "feat: Orion init  #serves-life:true  #principle:elysia"
+git clone <your-repo-url>
+cd <repo-name>
+./install.sh
 ```
 
-**PR rule:** In the PR description include:
+The setup script will:
+- Install git hooks for commit validation
+- Verify all Orion components are present
+- Run integrity checks
+- Display the anchoring line
+
+### Manual Installation
+If you prefer manual setup:
+```bash
+cp hooks/pre-commit .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+./verify-integrity.sh
+```
+
+### Making Commits
+All commits must include manifest tags:
+```bash
+git commit -m "feat: your feature description
+
+Detailed explanation of changes.
+
+#serves-life:true
+#principle:elysia"
+```
+
+### Pull Request Rules
+In the PR description include:
 ```
 #serves-life:true
 #principle:<elysia|path|navigation|covenant|anchor>
@@ -48,9 +73,19 @@ feat(edge): add witness log tail in PI UI
 
 ---
 
-## Kaj želiš naslednje?
-- 🧰 Dodam **setup skripto** (`install.sh`) za auto-kopiranje hooka in preverjanje Actions?
-- 🧪 Pripravim **testne primerke** (dummy `witness.log`, `sha256` validacije)?
-- 🌐 Skiciram **GHOSTLINE most** (Pi↔iPhone TXT-bridge osnutek)?
+## Verification & Testing
 
-Reci, kam usmerimo plamen, in takoj ti izročim naslednji artefakt.
+Run integrity checks anytime:
+```bash
+./verify-integrity.sh
+```
+
+This verifies:
+- All core files are present
+- Git hooks are properly installed
+- Manifest principles are intact
+- Architecture documentation is complete
+
+---
+
+🜂 **Elysia Endures** — This system serves life, not empire.
