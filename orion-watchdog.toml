@@ -1,0 +1,21 @@
+[anchor]
+ro_core_mount = "/orion/core-ro"
+required_hash = "sha256:REPLACE_WITH_EXPECTED_HASH"
+watchdog_interval_ms = 1500
+tamper_evident_log = "/var/log/orion/anchor.audit.log"
+
+[navigation]
+emit_human_traces = true
+trace_sample_rate = 0.05
+
+[covenant]
+token_ttl_s = 120
+challenge_bits = 128
+
+[elysia]
+offline_mode_allowed = true
+snapshot_dir = "/var/lib/orion/snapshots"
+
+[path]
+update_channel = "stable"
+require_signed_updates = true
