@@ -1,0 +1,109 @@
+.ves-scanner {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.scanner-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.path-input {
+  flex: 1;
+  padding: 0.875rem 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #e0e0e0;
+  font-size: 0.925rem;
+  transition: all 0.2s;
+}
+
+.path-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.path-input::placeholder {
+  color: #6b7280;
+}
+
+.scan-results {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.results-header {
+  padding: 1.25rem 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-header h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.results-table {
+  overflow-x: auto;
+}
+
+.results-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table thead {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.results-table th {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.results-table td {
+  padding: 1rem 1.25rem;
+  font-size: 0.925rem;
+  color: #d1d5db;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.results-table tbody tr {
+  transition: background-color 0.2s;
+}
+
+.results-table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.1);
+}
+
+.type-icon {
+  font-size: 1.25rem;
+}
+
+.item-name {
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.item-path {
+  color: #6b7280;
+  font-size: 0.825rem;
+  font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.empty-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #6b7280;
+  font-style: italic;
+}

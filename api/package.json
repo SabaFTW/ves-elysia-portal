@@ -1,0 +1,23 @@
+{
+  "name": "ves-elysia-api",
+  "version": "1.0.0",
+  "description": "Elysia API server for VES Portal - bridges React frontend with Python backend",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir dist --target bun",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.1.1",
+    "@elysiajs/static": "^1.1.1",
+    "elysia": "^1.1.21",
+    "memoirist": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
