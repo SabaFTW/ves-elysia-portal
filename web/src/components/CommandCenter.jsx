@@ -1,25 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './CommandCenter.css';
 
 function CommandCenter({ apiUrl, realTimeData }) {
   const [daemonStatus, setDaemonStatus] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDaemonStatus();
-    const interval = setInterval(fetchDaemonStatus, 10000); // Refresh every 10s
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Update with real-time data if available
-  useEffect(() => {
-    if (realTimeData) {
-      setDaemonStatus(realTimeData);
-    }
-  }, [realTimeData]);
-
-  const fetchDaemonStatus = async () => {
+  const fetchDaemonStatus = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}/api/daemon/status`);
       const data = await response.json();
@@ -32,7 +18,21 @@ function CommandCenter({ apiUrl, realTimeData }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
+
+  useEffect(() => {
+    fetchDaemonStatus();
+    const interval = setInterval(fetchDaemonStatus, 10000); // Refresh every 10s
+
+    return () => clearInterval(interval);
+  }, [fetchDaemonStatus]);
+
+  // Update with real-time data if available
+  useEffect(() => {
+    if (realTimeData) {
+      setDaemonStatus(realTimeData);
+    }
+  }, [realTimeData]);
 
   const handleDaemonControl = async (action) => {
     try {
