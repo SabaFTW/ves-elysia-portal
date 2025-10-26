@@ -18,6 +18,7 @@ function WeatherDashboard({ apiUrl, realTimeData }) {
     }, 300000);
 
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update with real-time data if available
