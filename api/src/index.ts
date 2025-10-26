@@ -35,6 +35,26 @@ interface DaemonLog {
   message: string;
 }
 
+interface WeatherStation {
+  station_id: string;
+  station_name: string;
+  river_name: string;
+  water_level: number | null;
+  flow_rate: number | null;
+  temperature: number | null;
+  timestamp: string;
+  latitude: number | null;
+  longitude: number | null;
+}
+
+interface WeatherAlert {
+  type: string;
+  severity: string;
+  message: string;
+  value: number;
+  threshold: number;
+}
+
 /**
  * VES Filesystem Scanner
  * Scans the VES directory structure and returns file/folder information
@@ -197,6 +217,149 @@ async function checkDaemonStatus(): Promise<{ running: boolean; pid?: number }> 
   }
 }
 
+/**
+ * Get current weather data from ARSO connector
+ */
+async function getWeatherData(): Promise<{ success: boolean; stations?: WeatherStation[]; error?: string }> {
+  try {
+    const scriptPath = join(WOLF_DAEMON_PATH, "arso_connector.py");
+    
+    if (!existsSync(scriptPath)) {
+      return { success: false, error: "ARSO connector not found" };
+    }
+
+    // Execute Python script to get data using spawn for better security
+    const { spawn } = await import("child_process");
+    const python = spawn("python3", [scriptPath, "fetch"], {
+      cwd: WOLF_DAEMON_PATH,
+      timeout: 30000
+    });
+
+    // Wait for process to complete
+    await new Promise((resolve, reject) => {
+      python.on("close", (code) => {
+        if (code === 0) resolve(code);
+        else reject(new Error(`Process exited with code ${code}`));
+      });
+      python.on("error", reject);
+    });
+
+    // Check if cache file exists
+    const cachePath = join(WOLF_DAEMON_PATH, "data", "arso_cache.json");
+    if (existsSync(cachePath)) {
+      const cacheData = await readFile(cachePath, "utf-8");
+      const cache = JSON.parse(cacheData);
+      
+      return {
+        success: true,
+        stations: cache.stations as WeatherStation[]
+      };
+    }
+
+    return { success: false, error: "No weather data available" };
+  } catch (err) {
+    console.error("Error fetching weather data:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Unknown error"
+    };
+  }
+}
+
+/**
+ * Get weather alerts from ARSO connector
+ */
+async function getWeatherAlerts(): Promise<{ success: boolean; alerts?: WeatherAlert[]; error?: string }> {
+  try {
+    const scriptPath = join(WOLF_DAEMON_PATH, "arso_connector.py");
+    
+    if (!existsSync(scriptPath)) {
+      return { success: false, error: "ARSO connector not found" };
+    }
+
+    // For now, check cache and calculate alerts from weather data
+    // This is safer than executing shell commands
+    const weatherResult = await getWeatherData();
+    const alerts: WeatherAlert[] = [];
+    
+    if (weatherResult.success && weatherResult.stations) {
+      for (const station of weatherResult.stations) {
+        // Check water level alerts
+        if (station.water_level && station.water_level > 400) {
+          alerts.push({
+            type: "water_level",
+            severity: "high",
+            message: `High water level at ${station.station_name}: ${station.water_level} cm`,
+            value: station.water_level,
+            threshold: 400
+          });
+        }
+        
+        // Check temperature alerts
+        if (station.temperature) {
+          if (station.temperature < 5) {
+            alerts.push({
+              type: "temperature",
+              severity: "low",
+              message: `Low temperature at ${station.station_name}: ${station.temperature}°C`,
+              value: station.temperature,
+              threshold: 5
+            });
+          } else if (station.temperature > 30) {
+            alerts.push({
+              type: "temperature",
+              severity: "high",
+              message: `High temperature at ${station.station_name}: ${station.temperature}°C`,
+              value: station.temperature,
+              threshold: 30
+            });
+          }
+        }
+      }
+    }
+
+    return {
+      success: true,
+      alerts
+    };
+  } catch (err) {
+    console.error("Error fetching weather alerts:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Unknown error"
+    };
+  }
+}
+
+/**
+ * Get weather history from cache
+ */
+async function getWeatherHistory(limit: number = 10): Promise<{ success: boolean; history?: any[]; error?: string }> {
+  try {
+    const cachePath = join(WOLF_DAEMON_PATH, "data", "arso_cache.json");
+    
+    if (!existsSync(cachePath)) {
+      return { success: true, history: [] };
+    }
+
+    const cacheData = await readFile(cachePath, "utf-8");
+    const cache = JSON.parse(cacheData);
+    
+    // For now, return the single cached snapshot
+    // In production, this would query a time-series database
+    return {
+      success: true,
+      history: [cache]
+    };
+  } catch (err) {
+    console.error("Error fetching weather history:", err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : "Unknown error"
+    };
+  }
+}
+
 // Initialize Elysia app
 const app = new Elysia()
   .use(cors())
@@ -347,6 +510,63 @@ const app = new Elysia()
     }
   })
 
+  // API: Get current weather data
+  .get("/api/weather/current", async () => {
+    const result = await getWeatherData();
+    
+    if (result.success) {
+      return {
+        success: true,
+        data: result.stations,
+        timestamp: new Date().toISOString()
+      };
+    }
+    
+    return {
+      success: false,
+      error: result.error || "Failed to fetch weather data"
+    };
+  })
+
+  // API: Get weather alerts
+  .get("/api/weather/alerts", async () => {
+    const result = await getWeatherAlerts();
+    
+    if (result.success) {
+      return {
+        success: true,
+        alerts: result.alerts,
+        count: result.alerts?.length || 0,
+        timestamp: new Date().toISOString()
+      };
+    }
+    
+    return {
+      success: false,
+      error: result.error || "Failed to fetch weather alerts"
+    };
+  })
+
+  // API: Get weather history
+  .get("/api/weather/history", async ({ query }) => {
+    const limit = parseInt(query.limit as string || "10");
+    const result = await getWeatherHistory(limit);
+    
+    if (result.success) {
+      return {
+        success: true,
+        history: result.history,
+        count: result.history?.length || 0,
+        timestamp: new Date().toISOString()
+      };
+    }
+    
+    return {
+      success: false,
+      error: result.error || "Failed to fetch weather history"
+    };
+  })
+
   // WebSocket endpoint for real-time updates
   .ws("/ws", {
     open(ws) {
@@ -365,13 +585,17 @@ const app = new Elysia()
           const daemonStatus = await checkDaemonStatus();
           const botStatus = await checkBotStatus();
           const recentLogs = await getDaemonLogs(5);
+          const weatherData = await getWeatherData();
+          const weatherAlerts = await getWeatherAlerts();
 
           ws.send(JSON.stringify({
             type: "update",
             data: {
               daemon: daemonStatus,
               bots: botStatus,
-              logs: recentLogs
+              logs: recentLogs,
+              weather: weatherData.success ? weatherData.stations : [],
+              alerts: weatherAlerts.success ? weatherAlerts.alerts : []
             },
             timestamp: new Date().toISOString()
           }));
@@ -422,7 +646,13 @@ console.log(`
   POST /api/telegram/send     - Send Telegram message
   POST /api/daemon/start      - Start Wolf Daemon
   POST /api/daemon/stop       - Stop Wolf Daemon
-  WS   /ws                    - Real-time updates
+  
+🌊 Weather Endpoints (ARSO):
+  GET  /api/weather/current   - Get current weather data
+  GET  /api/weather/alerts    - Get weather alerts
+  GET  /api/weather/history   - Get weather history
+  
+  WS   /ws                    - Real-time updates (includes weather)
 
 🐺 Wolf Daemon Path: ${WOLF_DAEMON_PATH}
 📁 VES Root: ${VES_ROOT}
