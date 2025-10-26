@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<podatki>
+  <postaja sifra="1100" ime="Ljubljana" reka="Ljubljanica" lat="46.0511" lon="14.5051">
+    <meritev parameterId="vodostaj">
+      <vrednost>125.5</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="pretok">
+      <vrednost>45.2</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="temperatura_vode">
+      <vrednost>12.5</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+  </postaja>
+  <postaja sifra="2200" ime="Maribor" reka="Drava" lat="46.5547" lon="15.6459">
+    <meritev parameterId="vodostaj">
+      <vrednost>185.3</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="pretok">
+      <vrednost>78.9</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="temperatura_vode">
+      <vrednost>11.8</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+  </postaja>
+  <postaja sifra="3300" ime="Celje" reka="Savinja" lat="46.2378" lon="15.2673">
+    <meritev parameterId="vodostaj">
+      <vrednost>92.7</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="pretok">
+      <vrednost>22.4</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="temperatura_vode">
+      <vrednost>13.2</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+  </postaja>
+  <postaja sifra="4400" ime="Kranj" reka="Sava" lat="46.2437" lon="14.3557">
+    <meritev parameterId="vodostaj">
+      <vrednost>420.5</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="pretok">
+      <vrednost>156.8</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="temperatura_vode">
+      <vrednost>8.5</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+  </postaja>
+  <postaja sifra="5500" ime="Novo Mesto" reka="Krka" lat="45.8034" lon="15.1701">
+    <meritev parameterId="vodostaj">
+      <vrednost>68.2</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="pretok">
+      <vrednost>18.3</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+    <meritev parameterId="temperatura_vode">
+      <vrednost>14.1</vrednost>
+      <datum>2025-10-26T11:00:00</datum>
+    </meritev>
+  </postaja>
+</podatki>

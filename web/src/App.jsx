@@ -4,6 +4,7 @@ import CommandCenter from './components/CommandCenter';
 import VESSystemScanner from './components/VESSystemScanner';
 import BotMonitor from './components/BotMonitor';
 import MessageBuilder from './components/MessageBuilder';
+import WeatherDashboard from './components/WeatherDashboard';
 
 const API_URL = 'http://localhost:3000';
 const WS_URL = 'ws://localhost:3000/ws';
@@ -66,6 +67,8 @@ function App() {
         return <BotMonitor apiUrl={API_URL} realTimeData={realTimeData} />;
       case 'message-builder':
         return <MessageBuilder apiUrl={API_URL} />;
+      case 'weather-dashboard':
+        return <WeatherDashboard apiUrl={API_URL} realTimeData={realTimeData} />;
       default:
         return <CommandCenter apiUrl={API_URL} realTimeData={realTimeData} />;
     }
@@ -117,6 +120,13 @@ function App() {
             >
               <span className="nav-icon">✉️</span>
               <span>Message Builder</span>
+            </button>
+            <button
+              className={`nav-item ${activeView === 'weather-dashboard' ? 'active' : ''}`}
+              onClick={() => setActiveView('weather-dashboard')}
+            >
+              <span className="nav-icon">🌊</span>
+              <span>Weather Monitor</span>
             </button>
           </div>
         </nav>
