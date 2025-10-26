@@ -1,25 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './BotMonitor.css';
 
 function BotMonitor({ apiUrl, realTimeData }) {
   const [botStatus, setBotStatus] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchBotStatus();
-    const interval = setInterval(fetchBotStatus, 15000); // Refresh every 15s
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Update with real-time data if available
-  useEffect(() => {
-    if (realTimeData?.bots) {
-      setBotStatus(realTimeData.bots);
-    }
-  }, [realTimeData]);
-
-  const fetchBotStatus = async () => {
+  const fetchBotStatus = useCallback(async () => {
     try {
       const response = await fetch(`${apiUrl}/api/bots/status`);
       const data = await response.json();
@@ -32,7 +18,21 @@ function BotMonitor({ apiUrl, realTimeData }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [apiUrl]);
+
+  useEffect(() => {
+    fetchBotStatus();
+    const interval = setInterval(fetchBotStatus, 15000); // Refresh every 15s
+
+    return () => clearInterval(interval);
+  }, [fetchBotStatus]);
+
+  // Update with real-time data if available
+  useEffect(() => {
+    if (realTimeData?.bots) {
+      setBotStatus(realTimeData.bots);
+    }
+  }, [realTimeData]);
 
   const getBotEmoji = (name) => {
     switch (name) {
