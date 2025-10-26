@@ -228,11 +228,21 @@ async function getWeatherData(): Promise<{ success: boolean; stations?: WeatherS
       return { success: false, error: "ARSO connector not found" };
     }
 
-    // Execute Python script to get data
-    const { stdout, stderr } = await execAsync(
-      `cd ${WOLF_DAEMON_PATH} && python3 arso_connector.py fetch`,
-      { timeout: 30000 }
-    );
+    // Execute Python script to get data using spawn for better security
+    const { spawn } = await import("child_process");
+    const python = spawn("python3", [scriptPath, "fetch"], {
+      cwd: WOLF_DAEMON_PATH,
+      timeout: 30000
+    });
+
+    // Wait for process to complete
+    await new Promise((resolve, reject) => {
+      python.on("close", (code) => {
+        if (code === 0) resolve(code);
+        else reject(new Error(`Process exited with code ${code}`));
+      });
+      python.on("error", reject);
+    });
 
     // Check if cache file exists
     const cachePath = join(WOLF_DAEMON_PATH, "data", "arso_cache.json");
@@ -267,18 +277,11 @@ async function getWeatherAlerts(): Promise<{ success: boolean; alerts?: WeatherA
       return { success: false, error: "ARSO connector not found" };
     }
 
-    // Execute Python script to get alerts
-    const { stdout } = await execAsync(
-      `cd ${WOLF_DAEMON_PATH} && python3 arso_connector.py alerts`,
-      { timeout: 30000 }
-    );
-
-    // Parse alerts from output (simple implementation)
-    // In production, this would use structured JSON output
+    // For now, check cache and calculate alerts from weather data
+    // This is safer than executing shell commands
+    const weatherResult = await getWeatherData();
     const alerts: WeatherAlert[] = [];
     
-    // For now, check cache and calculate alerts from weather data
-    const weatherResult = await getWeatherData();
     if (weatherResult.success && weatherResult.stations) {
       for (const station of weatherResult.stations) {
         // Check water level alerts
