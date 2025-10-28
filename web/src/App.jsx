@@ -5,6 +5,7 @@ import VESSystemScanner from './components/VESSystemScanner';
 import BotMonitor from './components/BotMonitor';
 import MessageBuilder from './components/MessageBuilder';
 import WeatherDashboard from './components/WeatherDashboard';
+import LumoDiNilo from './components/LumoDiNilo';
 
 const API_URL = 'http://localhost:3000';
 const WS_URL = 'ws://localhost:3000/ws';
@@ -69,6 +70,8 @@ function App() {
         return <MessageBuilder apiUrl={API_URL} />;
       case 'weather-dashboard':
         return <WeatherDashboard apiUrl={API_URL} realTimeData={realTimeData} />;
+      case 'lumo-di-nilo':
+        return <LumoDiNilo apiUrl={API_URL} realTimeData={realTimeData} />;
       default:
         return <CommandCenter apiUrl={API_URL} realTimeData={realTimeData} />;
     }
@@ -127,6 +130,13 @@ function App() {
             >
               <span className="nav-icon">🌊</span>
               <span>Weather Monitor</span>
+            </button>
+            <button
+              className={`nav-item ${activeView === 'lumo-di-nilo' ? 'active' : ''}`}
+              onClick={() => setActiveView('lumo-di-nilo')}
+            >
+              <span className="nav-icon">👁️🔥</span>
+              <span>Lumo di Nilo</span>
             </button>
           </div>
         </nav>

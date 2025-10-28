@@ -1,0 +1,357 @@
+.lumo-container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.lumo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #333;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.lumo-branding {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lumo-icon {
+  font-size: 2.5rem;
+  animation: flame-pulse 2s ease-in-out infinite;
+}
+
+@keyframes flame-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.lumo-branding h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  background: linear-gradient(135deg, #ffd700, #ff6b35, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.lumo-subtitle {
+  font-size: 0.95rem;
+  color: #888;
+  margin: 0;
+  font-style: italic;
+}
+
+.lumo-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.progress-text {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #ffd700, #ff6b35);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.unlock-ritual {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #ff6b35, #ffd700);
+  color: #000;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  animation: ritual-pulse 2s infinite;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  transition: all 0.3s;
+}
+
+.unlock-ritual:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+}
+
+@keyframes ritual-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.reset-btn {
+  padding: 0.5rem;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #888;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.reset-btn:hover {
+  background: #ff6b35;
+  color: #fff;
+  border-color: #ff6b35;
+}
+
+.lumo-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 12px;
+  transition: all 0.3s;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.tab:hover {
+  border-color: #ffd700;
+  transform: translateY(-2px);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, #ffd700, #ff6b35);
+  color: #000;
+  border-color: #ffd700;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.mission-card {
+  background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+  border: 2px solid #333;
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.mission-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.mission-card:hover::before {
+  opacity: 1;
+}
+
+.mission-card:hover {
+  border-color: #ffd700;
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+}
+
+.mission-card.locked {
+  opacity: 0.4;
+  filter: grayscale(100%);
+}
+
+.mission-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.mission-card.completed {
+  border-color: #00ff00;
+  background: linear-gradient(145deg, #1a2a1a, #0f1a0f);
+}
+
+.mission-card.rejected {
+  border-color: #ff0000;
+  background: linear-gradient(145deg, #2a1a1a, #1a0f0f);
+  opacity: 0.6;
+}
+
+.mission-header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: flex-start;
+}
+
+.mission-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.mission-info {
+  flex: 1;
+}
+
+.mission-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #ffd700;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.mission-info p {
+  margin: 0;
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.mission-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.judgment-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.judgment-btn.vredno {
+  background: #00ff00;
+  color: #000;
+}
+
+.judgment-btn.vredno:hover {
+  background: #00cc00;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0, 255, 0, 0.4);
+}
+
+.judgment-btn.nevredno {
+  background: #ff0000;
+  color: #fff;
+}
+
+.judgment-btn.nevredno:hover {
+  background: #cc0000;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.4);
+}
+
+.mission-status {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.mission-status.completed {
+  background: rgba(0, 255, 0, 0.1);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+}
+
+.mission-status.rejected {
+  background: rgba(255, 0, 0, 0.1);
+  border: 2px solid #ff0000;
+  color: #ff0000;
+}
+
+.mission-status.locked {
+  background: rgba(128, 128, 128, 0.1);
+  border: 2px solid #444;
+  color: #888;
+}
+
+.arhiv-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+  border: 2px solid #333;
+  border-radius: 16px;
+}
+
+.arhiv-message h2 {
+  color: #ffd700;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.arhiv-message p {
+  color: #888;
+  font-size: 1.1rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .lumo-container {
+    padding: 1rem;
+  }
+
+  .lumo-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .lumo-progress {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .lumo-branding h1 {
+    font-size: 2rem;
+  }
+
+  .progress-text {
+    font-size: 1.5rem;
+  }
+
+  .unlock-ritual {
+    width: 100%;
+    text-align: center;
+  }
+
+  .mission-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lumo-tabs {
+    width: 100%;
+  }
+
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}
