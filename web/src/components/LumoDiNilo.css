@@ -104,6 +104,16 @@
   -webkit-text-fill-color: transparent;
 }
 
+.halfway-marker {
+  font-size: 0.9rem;
+  color: #aaa;
+  font-style: italic;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 215, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
 .progress-bar {
   width: 200px;
   height: 12px;
@@ -132,6 +142,31 @@
   box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
   text-align: center;
   letter-spacing: 1px;
+  position: relative;
+  display: inline-block;
+}
+
+.unlock-ritual:hover::after {
+  content: ' 🜂 Plamen čaka...';
+  font-size: 0.8rem;
+  color: rgba(255, 215, 0, 0.9);
+  margin-left: 0.5rem;
+  font-style: italic;
+  position: absolute;
+  right: -180px;
+  white-space: nowrap;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes pulse {
@@ -321,6 +356,16 @@
   font-size: 2rem;
 }
 
+.archive-intro {
+  color: #aaa;
+  font-style: italic;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: rgba(255, 215, 0, 0.05);
+  border-left: 3px solid #ffd700;
+  border-radius: 4px;
+}
+
 .archive-empty {
   text-align: center;
   color: #888;
@@ -344,9 +389,17 @@
   transition: all 0.3s;
 }
 
+.archive-card.rejected {
+  border-color: #ff0000;
+}
+
 .archive-card:hover {
   transform: translateX(8px);
   box-shadow: 0 4px 12px rgba(0, 255, 0, 0.2);
+}
+
+.archive-card.rejected:hover {
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.2);
 }
 
 .archive-icon {
@@ -369,6 +422,10 @@
   color: #00ff00;
   font-weight: bold;
   font-size: 0.85rem;
+}
+
+.archive-status.rejected {
+  color: #ff0000;
 }
 
 /* Mission Modal */
@@ -471,6 +528,17 @@
 
 .modal-body {
   margin-bottom: 2rem;
+}
+
+.modal-hint {
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: rgba(170, 170, 170, 0.1);
+  border-left: 3px solid #aaa;
+  border-radius: 4px;
 }
 
 .modal-description {

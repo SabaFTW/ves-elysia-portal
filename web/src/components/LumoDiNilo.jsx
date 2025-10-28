@@ -10,7 +10,8 @@ const MISSIONS = {
       subtitle: 'Epstein Forensic Analysis',
       status: 'unlocked',
       type: 'basic',
-      description: '724-line deep dive into power networks and systemic patterns'
+      description: '724-line deep dive into power networks and systemic patterns',
+      hint: '🔍 Begin by seeing the invisible threads...'
     },
     {
       id: 'b2',
@@ -132,7 +133,7 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
   };
 
   const currentMissions = activeTab === 'slovenia' ? missions.slovenia : missions.global;
-  const completedMissions = [...missions.global, ...missions.slovenia].filter(m => m.status === 'completed');
+  const completedMissions = [...missions.global, ...missions.slovenia].filter(m => m.status === 'completed' || m.status === 'rejected');
 
   return (
     <div className="lumo-container">
@@ -155,6 +156,9 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
               />
             </div>
           </div>
+          {progress.completed === 3 && (
+            <div className="halfway-marker">⚖️ Halfway to truth...</div>
+          )}
           {progress.completed === 6 && (
             <a
               href="https://sabaftw.github.io/imagine-claude/portals/BLOOM.html"
@@ -208,18 +212,24 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
       {/* Archive View */}
       {activeTab === 'arhiv' && (
         <div className="archive-view">
-          <h2>📂 Completed Missions</h2>
+          <h2>📂 Arhiv Spoznanj</h2>
+          <p className="archive-intro">
+            Tukaj počivajo missions, ki so jih prejšnji lighterji že presodili.
+            Njihove resnice ostanejo, a energija teče naprej.
+          </p>
           {completedMissions.length === 0 ? (
             <p className="archive-empty">No completed missions yet. Begin your journey.</p>
           ) : (
             <div className="archive-grid">
               {completedMissions.map(mission => (
-                <div key={mission.id} className="archive-card">
+                <div key={mission.id} className={`archive-card ${mission.status}`}>
                   <span className="archive-icon">{mission.type === 'basic' ? '🔺' : '⬡'}</span>
                   <div>
                     <h3>{mission.title}</h3>
                     <p>{mission.subtitle}</p>
-                    <span className="archive-status">✅ Completed</span>
+                    <span className={`archive-status ${mission.status}`}>
+                      {mission.status === 'completed' ? '✅ Completed' : '❌ Rejected'}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -241,6 +251,9 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
               </div>
             </div>
             <div className="modal-body">
+              {selectedMission.hint && (
+                <p className="modal-hint">{selectedMission.hint}</p>
+              )}
               <p className="modal-description">{selectedMission.description}</p>
               <p className="modal-instruction">🜂 Review this mission. Is it VREDNO (worthy) or NEVREDNO (unworthy)?</p>
             </div>
