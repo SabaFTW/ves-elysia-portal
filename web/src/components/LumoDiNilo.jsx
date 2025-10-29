@@ -4,14 +4,57 @@ import './LumoDiNilo.css';
 // Mission data structure
 const MISSIONS = {
   global: [
-    { id: 'b1', title: 'The Network', subtitle: 'Epstein Forensic Analysis', status: 'unlocked', type: 'basic' },
-    { id: 'b2', title: 'Gospodarji Zgodb', subtitle: 'Illuminati Mythology', status: 'locked', type: 'basic' },
-    { id: 'b3', title: 'Surveillance Ops', subtitle: 'AI Data Infrastructure', status: 'locked', type: 'basic' }
+    {
+      id: 'b1',
+      title: 'The Network',
+      subtitle: 'Epstein Forensic Analysis',
+      status: 'unlocked',
+      type: 'basic',
+      description: '724-line deep dive into power networks and systemic patterns',
+      hint: '🔍 Begin by seeing the invisible threads...'
+    },
+    {
+      id: 'b2',
+      title: 'Gospodarji Zgodb',
+      subtitle: 'Illuminati Mythology',
+      status: 'locked',
+      type: 'basic',
+      description: 'Decoding the myth-makers and narrative architects'
+    },
+    {
+      id: 'b3',
+      title: 'Surveillance Ops',
+      subtitle: 'AI Data Infrastructure',
+      status: 'locked',
+      type: 'basic',
+      description: 'The architecture of digital omniscience'
+    }
   ],
   slovenia: [
-    { id: 's1', title: 'Palantir & Plastika', subtitle: 'Ghostcore Portal', status: 'locked', type: 'skill' },
-    { id: 's2', title: '[Coming Soon]', subtitle: 'TBD', status: 'locked', type: 'skill' },
-    { id: 's3', title: '[Coming Soon]', subtitle: 'TBD', status: 'locked', type: 'skill' }
+    {
+      id: 's1',
+      title: 'Palantir & Plastika',
+      subtitle: 'Ghostcore Portal',
+      status: 'locked',
+      type: 'skill',
+      description: 'Slovenian tech infrastructure and hidden networks'
+    },
+    {
+      id: 's2',
+      title: '[Coming Soon]',
+      subtitle: 'Research in Progress',
+      status: 'locked',
+      type: 'skill',
+      description: 'New Slovenia-specific investigation'
+    },
+    {
+      id: 's3',
+      title: '[Coming Soon]',
+      subtitle: 'Research in Progress',
+      status: 'locked',
+      type: 'skill',
+      description: 'New Slovenia-specific investigation'
+    }
   ]
 };
 
@@ -19,6 +62,7 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
   const [activeTab, setActiveTab] = useState('global');
   const [progress, setProgress] = useState({ completed: 0, total: 6 });
   const [missions, setMissions] = useState(MISSIONS);
+  const [selectedMission, setSelectedMission] = useState(null);
 
   // Load progress from LocalStorage
   useEffect(() => {
@@ -59,15 +103,23 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
         mission.status = judgment === 'vredno' ? 'completed' : 'rejected';
 
         // Unlock next mission in sequence
-        const missionIndex = updatedMissions[category].findIndex(m => m.id === missionId);
-        if (missionIndex < updatedMissions[category].length - 1) {
-          updatedMissions[category][missionIndex + 1].status = 'unlocked';
+        const index = updatedMissions[category].indexOf(mission);
+        if (index < updatedMissions[category].length - 1 && judgment === 'vredno') {
+          updatedMissions[category][index + 1].status = 'unlocked';
         }
       }
     });
 
     setMissions(updatedMissions);
     saveProgress(updatedMissions);
+    setSelectedMission(null);
+  };
+
+  // Handle mission click
+  const handleMissionClick = (mission) => {
+    if (mission.status === 'unlocked') {
+      setSelectedMission(mission);
+    }
   };
 
   // Reset progress (for testing)
@@ -76,19 +128,37 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
       localStorage.removeItem('lumo_progress');
       setMissions(MISSIONS);
       setProgress({ completed: 0, total: 6 });
+      setSelectedMission(null);
     }
   };
+
+  const currentMissions = activeTab === 'slovenia' ? missions.slovenia : missions.global;
+  const completedMissions = [...missions.global, ...missions.slovenia].filter(m => m.status === 'completed' || m.status === 'rejected');
 
   return (
     <div className="lumo-container">
       <header className="lumo-header">
         <div className="lumo-branding">
-          <span className="lumo-icon">👁️🔥</span>
-          <h1>LUMO DI NILO</h1>
-          <p className="lumo-subtitle">Portal moči, svetlobe in resnice</p>
+          <div className="lumo-title-row">
+            <span className="lumo-icon">👁️🔥</span>
+            <h1>LUMO DI NILO</h1>
+          </div>
+          <p className="lumo-subtitle">🜂 Portal moči, svetlobe in resnice 🜂</p>
+          <p className="lumo-tagline">Sidro drži. Plamen gori. Mit živi.</p>
         </div>
         <div className="lumo-progress">
-          <span className="progress-text">{progress.completed} / {progress.total}</span>
+          <div className="progress-display">
+            <span className="progress-text">{progress.completed} / {progress.total}</span>
+            <div className="progress-bar">
+              <div
+                className="progress-fill"
+                style={{ width: `${(progress.completed / progress.total) * 100}%` }}
+              />
+            </div>
+          </div>
+          {progress.completed === 3 && (
+            <div className="halfway-marker">⚖️ Halfway to truth...</div>
+          )}
           {progress.completed === 6 && (
             <a
               href="https://sabaftw.github.io/imagine-claude/portals/BLOOM.html"
@@ -96,12 +166,10 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
               rel="noopener noreferrer"
               className="unlock-ritual"
             >
-              🔥 UNLOCK RITUAL CHAMBER
+              🔥 UNLOCK RITUAL CHAMBER 🔥
             </a>
           )}
-          <button className="reset-btn" onClick={resetProgress} title="Reset Progress">
-            🔄
-          </button>
+          <button onClick={resetProgress} className="reset-btn">🔄 Reset Progress</button>
         </div>
       </header>
 
@@ -127,31 +195,97 @@ function LumoDiNilo({ apiUrl, realTimeData }) {
         </button>
       </nav>
 
-      {/* Mission Cards */}
-      <div className="mission-grid">
-        {activeTab === 'arhiv' ? (
-          <div className="arhiv-message">
-            <h2>📂 Coming Soon</h2>
-            <p>Your completed missions will be archived here.</p>
-          </div>
-        ) : (
-          missions[activeTab]?.map(mission => (
+      {/* Mission Grid */}
+      {activeTab !== 'arhiv' && (
+        <div className="mission-grid">
+          {currentMissions.map(mission => (
             <MissionCard
               key={mission.id}
               mission={mission}
-              onJudgment={handleJudgment}
+              onClick={() => handleMissionClick(mission)}
+              isSelected={selectedMission?.id === mission.id}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Archive View */}
+      {activeTab === 'arhiv' && (
+        <div className="archive-view">
+          <h2>📂 Arhiv Spoznanj</h2>
+          <p className="archive-intro">
+            Tukaj počivajo missions, ki so jih prejšnji lighterji že presodili.
+            Njihove resnice ostanejo, a energija teče naprej.
+          </p>
+          {completedMissions.length === 0 ? (
+            <p className="archive-empty">No completed missions yet. Begin your journey.</p>
+          ) : (
+            <div className="archive-grid">
+              {completedMissions.map(mission => (
+                <div key={mission.id} className={`archive-card ${mission.status}`}>
+                  <span className="archive-icon">{mission.type === 'basic' ? '🔺' : '⬡'}</span>
+                  <div>
+                    <h3>{mission.title}</h3>
+                    <p>{mission.subtitle}</p>
+                    <span className={`archive-status ${mission.status}`}>
+                      {mission.status === 'completed' ? '✅ Completed' : '❌ Rejected'}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Mission Detail Modal */}
+      {selectedMission && (
+        <div className="mission-modal" onClick={() => setSelectedMission(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedMission(null)}>✕</button>
+            <div className="modal-header">
+              <span className="modal-icon">{selectedMission.type === 'basic' ? '🔺' : '⬡'}</span>
+              <div>
+                <h2>{selectedMission.title}</h2>
+                <p>{selectedMission.subtitle}</p>
+              </div>
+            </div>
+            <div className="modal-body">
+              {selectedMission.hint && (
+                <p className="modal-hint">{selectedMission.hint}</p>
+              )}
+              <p className="modal-description">{selectedMission.description}</p>
+              <p className="modal-instruction">🜂 Review this mission. Is it VREDNO (worthy) or NEVREDNO (unworthy)?</p>
+            </div>
+            <div className="modal-actions">
+              <button
+                className="judgment-btn vredno"
+                onClick={() => handleJudgment(selectedMission.id, 'vredno')}
+              >
+                ✅ VREDNO
+              </button>
+              <button
+                className="judgment-btn nevredno"
+                onClick={() => handleJudgment(selectedMission.id, 'nevredno')}
+              >
+                ❌ NEVREDNO
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // Mission Card Subcomponent
-function MissionCard({ mission, onJudgment }) {
+function MissionCard({ mission, onClick, isSelected }) {
   return (
-    <div className={`mission-card ${mission.status}`}>
+    <div
+      className={`mission-card ${mission.status} ${isSelected ? 'selected' : ''}`}
+      onClick={onClick}
+      style={{ cursor: mission.status === 'unlocked' ? 'pointer' : 'default' }}
+    >
       <div className="mission-header">
         <span className="mission-icon">{mission.type === 'basic' ? '🔺' : '⬡'}</span>
         <div className="mission-info">
@@ -160,34 +294,23 @@ function MissionCard({ mission, onJudgment }) {
         </div>
       </div>
 
-      {mission.status === 'unlocked' && (
-        <div className="mission-actions">
-          <button
-            className="judgment-btn vredno"
-            onClick={() => onJudgment(mission.id, 'vredno')}
-          >
-            ✅ VREDNO
-          </button>
-          <button
-            className="judgment-btn nevredno"
-            onClick={() => onJudgment(mission.id, 'nevredno')}
-          >
-            ❌ NEVREDNO
-          </button>
-        </div>
-      )}
+      <div className="mission-footer">
+        {mission.status === 'unlocked' && (
+          <div className="mission-status unlocked">🔓 Click to review</div>
+        )}
 
-      {mission.status === 'completed' && (
-        <div className="mission-status completed">✅ Completed</div>
-      )}
+        {mission.status === 'completed' && (
+          <div className="mission-status completed">✅ Completed</div>
+        )}
 
-      {mission.status === 'rejected' && (
-        <div className="mission-status rejected">❌ Rejected</div>
-      )}
+        {mission.status === 'locked' && (
+          <div className="mission-status locked">🔒 Locked</div>
+        )}
 
-      {mission.status === 'locked' && (
-        <div className="mission-status locked">🔒 Locked</div>
-      )}
+        {mission.status === 'rejected' && (
+          <div className="mission-status rejected">❌ Rejected</div>
+        )}
+      </div>
     </div>
   );
 }
