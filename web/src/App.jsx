@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css';
 import CommandCenter from './components/CommandCenter';
 import VESSystemScanner from './components/VESSystemScanner';
@@ -7,20 +7,55 @@ import MessageBuilder from './components/MessageBuilder';
 import WeatherDashboard from './components/WeatherDashboard';
 import LumoDiNilo from './components/LumoDiNilo';
 
-const API_URL = 'http://localhost:3000';
-const WS_URL = 'ws://localhost:3000/ws';
+const resolveApiUrl = () => {
+  const envUrl = import.meta.env?.VITE_API_URL?.trim();
+
+  if (envUrl) {
+    return envUrl.replace(/\/?$/, '');
+  }
+
+  if (typeof window !== 'undefined') {
+    return window.location.origin;
+  }
+
+  return '';
+};
+
+const resolveWsUrl = () => {
+  const envUrl = import.meta.env?.VITE_WS_URL?.trim();
+
+  if (envUrl) {
+    return envUrl;
+  }
+
+  if (typeof window !== 'undefined') {
+    const { protocol, host } = window.location;
+    const wsProtocol = protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${wsProtocol}//${host}/ws`;
+  }
+
+  return '';
+};
 
 function App() {
   const [activeView, setActiveView] = useState('command-center');
   const [wsConnected, setWsConnected] = useState(false);
   const [realTimeData, setRealTimeData] = useState(null);
+  const apiUrl = useMemo(() => resolveApiUrl(), []);
+  const wsUrl = useMemo(() => resolveWsUrl(), []);
 
   // WebSocket connection for real-time updates
   useEffect(() => {
     let ws;
+    let reconnectTimeout;
 
     const connectWebSocket = () => {
-      ws = new WebSocket(WS_URL);
+      if (!wsUrl) {
+        console.warn('WebSocket URL is not configured. Skipping connection attempt.');
+        return;
+      }
+
+      ws = new WebSocket(wsUrl);
 
       ws.onopen = () => {
         console.log('🔌 WebSocket connected');
@@ -41,7 +76,7 @@ function App() {
         setWsConnected(false);
 
         // Attempt to reconnect after 5 seconds
-        setTimeout(connectWebSocket, 5000);
+        reconnectTimeout = setTimeout(connectWebSocket, 5000);
       };
 
       ws.onerror = (error) => {
@@ -55,25 +90,28 @@ function App() {
       if (ws) {
         ws.close();
       }
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
     };
-  }, []);
+  }, [wsUrl]);
 
   const renderView = () => {
     switch (activeView) {
       case 'command-center':
-        return <CommandCenter apiUrl={API_URL} realTimeData={realTimeData} />;
+        return <CommandCenter apiUrl={apiUrl} realTimeData={realTimeData} />;
       case 'system-scanner':
-        return <VESSystemScanner apiUrl={API_URL} />;
+        return <VESSystemScanner apiUrl={apiUrl} />;
       case 'bot-monitor':
-        return <BotMonitor apiUrl={API_URL} realTimeData={realTimeData} />;
+        return <BotMonitor apiUrl={apiUrl} realTimeData={realTimeData} />;
       case 'message-builder':
-        return <MessageBuilder apiUrl={API_URL} />;
+        return <MessageBuilder apiUrl={apiUrl} />;
       case 'weather-dashboard':
-        return <WeatherDashboard apiUrl={API_URL} realTimeData={realTimeData} />;
+        return <WeatherDashboard apiUrl={apiUrl} realTimeData={realTimeData} />;
       case 'lumo-di-nilo':
-        return <LumoDiNilo apiUrl={API_URL} realTimeData={realTimeData} />;
+        return <LumoDiNilo apiUrl={apiUrl} realTimeData={realTimeData} />;
       default:
-        return <CommandCenter apiUrl={API_URL} realTimeData={realTimeData} />;
+        return <CommandCenter apiUrl={apiUrl} realTimeData={realTimeData} />;
     }
   };
 
