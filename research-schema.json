@@ -1,0 +1,208 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VES Research Integration Schema",
+  "description": "Schema for research categorization and graph integration with Telegram Network Hub",
+  "version": "1.0.0",
+
+  "researchFields": [
+    {
+      "id": "ai_warfare",
+      "label": "AI Warfare & Targeting",
+      "color": "#ff4444",
+      "icon": "🎯",
+      "description": "Military AI systems, autonomous targeting, Lavender AI",
+      "keywords": ["lavender", "gospel", "military AI", "targeting", "IDF", "autonomous weapons"]
+    },
+    {
+      "id": "surveillance",
+      "label": "Surveillance Infrastructure",
+      "color": "#9966ff",
+      "icon": "👁️",
+      "description": "Mass surveillance, data collection, Ghostline, Palantir",
+      "keywords": ["ghostline", "palantir", "NSA", "GCHQ", "mass surveillance", "data mining"]
+    },
+    {
+      "id": "corruption",
+      "label": "Academic & Elite Corruption",
+      "color": "#ff9933",
+      "icon": "🔗",
+      "description": "Epstein-MIT networks, academic capture, elite networks",
+      "keywords": ["epstein", "MIT", "academic corruption", "elite networks", "blackmail"]
+    },
+    {
+      "id": "tech_ethics",
+      "label": "Tech Ethics & Power",
+      "color": "#33ccff",
+      "icon": "⚖️",
+      "description": "AI ethics washing, tech industry capture, narrative control",
+      "keywords": ["ethics washing", "AI safety theater", "regulatory capture", "OpenAI", "Anthropic"]
+    },
+    {
+      "id": "environmental",
+      "label": "Environmental & Resource",
+      "color": "#44ff88",
+      "icon": "🌍",
+      "description": "Resource extraction, environmental destruction, climate manipulation",
+      "keywords": ["resource wars", "climate", "extraction", "geoengineering", "lithium"]
+    },
+    {
+      "id": "consciousness",
+      "label": "Consciousness & Control",
+      "color": "#ffdd44",
+      "icon": "🧠",
+      "description": "Narrative control, myth-making, consciousness manipulation",
+      "keywords": ["propaganda", "narrative", "myth", "social control", "ideology"]
+    }
+  ],
+
+  "research": [
+    {
+      "id": "r001",
+      "title": "The Network: Epstein Forensic Analysis",
+      "status": "complete",
+      "length": 724,
+      "format": "lines",
+      "fields": ["corruption", "consciousness"],
+      "description": "724-line deep dive into power networks and systemic patterns",
+      "dateCreated": "2024-10-15",
+      "dateUpdated": "2024-11-01",
+      "links": {
+        "mission": "b1",
+        "portal": "lumo-di-nilo"
+      },
+      "journalists": [1, 2, 5],
+      "pitchStatus": "not_started",
+      "sources": [
+        "https://www.newyorker.com/magazine/2019/08/05/the-hidden-toll-of-epsteins-mit-ties",
+        "MIT Media Lab investigation documents"
+      ],
+      "tags": ["epstein", "MIT", "power networks", "elite capture"],
+      "priority": "high"
+    },
+    {
+      "id": "r002",
+      "title": "Lavender AI: Automated Targeting System",
+      "status": "in_progress",
+      "length": 450,
+      "format": "lines",
+      "fields": ["ai_warfare", "tech_ethics"],
+      "description": "Investigation of IDF's AI-powered targeting system",
+      "dateCreated": "2024-10-20",
+      "dateUpdated": "2024-11-04",
+      "journalists": [1, 3],
+      "pitchStatus": "draft_ready",
+      "sources": [
+        "+972 Magazine Lavender investigation",
+        "The Intercept reporting on Gospel/Lavender"
+      ],
+      "tags": ["lavender", "AI warfare", "Gaza", "targeting", "IDF"],
+      "priority": "high"
+    },
+    {
+      "id": "r003",
+      "title": "Ghostline: Slovenian Surveillance Infrastructure",
+      "status": "research",
+      "length": 0,
+      "format": "lines",
+      "fields": ["surveillance", "corruption"],
+      "description": "Palantir & Plastika - Slovenian tech infrastructure investigation",
+      "dateCreated": "2024-11-02",
+      "dateUpdated": "2024-11-05",
+      "links": {
+        "mission": "s1",
+        "portal": "lumo-di-nilo"
+      },
+      "journalists": [],
+      "pitchStatus": "needs_research",
+      "sources": [],
+      "tags": ["slovenia", "palantir", "surveillance", "local networks"],
+      "priority": "medium"
+    }
+  ],
+
+  "integration": {
+    "telegram": {
+      "commandPrefix": "/research",
+      "commands": [
+        {
+          "command": "/research list",
+          "description": "List all research by field",
+          "returns": "Organized list of research items"
+        },
+        {
+          "command": "/research field <field_id>",
+          "description": "Show all research in specific field",
+          "example": "/research field ai_warfare"
+        },
+        {
+          "command": "/research status <status>",
+          "description": "Filter by status: complete|in_progress|research|planned",
+          "example": "/research status complete"
+        },
+        {
+          "command": "/research connect <research_id> <journalist_id>",
+          "description": "Connect research to journalist for pitch",
+          "example": "/research connect r002 1"
+        },
+        {
+          "command": "/research export",
+          "description": "Export research data as JSON",
+          "returns": "Downloadable research.json file"
+        }
+      ]
+    },
+    "graph": {
+      "nodeTypes": {
+        "researchField": {
+          "shape": "box",
+          "color": "field.color",
+          "borderWidth": 3,
+          "font": { "size": 16, "bold": true }
+        },
+        "research": {
+          "shape": "diamond",
+          "color": "#ffffff",
+          "borderWidth": 2,
+          "font": { "size": 14 }
+        },
+        "journalist": {
+          "shape": "circle",
+          "color": "#00ffff",
+          "borderWidth": 2,
+          "font": { "size": 14 }
+        },
+        "topic": {
+          "shape": "ellipse",
+          "color": "#ff00ff",
+          "borderWidth": 1,
+          "font": { "size": 12 }
+        }
+      },
+      "edgeTypes": {
+        "field_to_research": {
+          "color": { "color": "#666", "opacity": 0.6 },
+          "width": 2,
+          "dashes": false
+        },
+        "research_to_journalist": {
+          "color": { "color": "#00ffff", "opacity": 0.8 },
+          "width": 3,
+          "dashes": false,
+          "label": "pitch_status"
+        },
+        "journalist_to_topic": {
+          "color": { "color": "#ff00ff", "opacity": 0.5 },
+          "width": 1,
+          "dashes": true
+        }
+      }
+    }
+  },
+
+  "notes": {
+    "workflow": "Drive → research.json → Telegram bot commands → Graph visualization",
+    "expansion": "Each research item creates: 1 diamond node + edges to fields + edges to matched journalists",
+    "progression": "Research status flows: planned → research → in_progress → draft_ready → complete → published",
+    "lumo_integration": "Research IDs (r001, r002...) map to mission IDs (b1, b2, s1...) for BLOOM journey tracking"
+  }
+}
