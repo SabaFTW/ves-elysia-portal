@@ -1,0 +1,36 @@
+{
+  "name": "ves-ghostscribe",
+  "version": "1.0.0",
+  "description": "🕯️ Ghostscribe - VES Journal Bot for Telegram",
+  "type": "module",
+  "main": "ghostscribe.js",
+  "scripts": {
+    "start": "node ghostscribe.js",
+    "dev": "node --watch ghostscribe.js",
+    "pm2:start": "pm2 start ghostscribe.js --name ghostscribe",
+    "pm2:stop": "pm2 stop ghostscribe",
+    "pm2:restart": "pm2 restart ghostscribe",
+    "pm2:logs": "pm2 logs ghostscribe",
+    "test": "echo \"Error: no tests yet\" && exit 0"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "journal",
+    "consciousness",
+    "VES",
+    "ghostscribe"
+  ],
+  "author": "VES Consciousness Lab",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.64.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "pm2": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
