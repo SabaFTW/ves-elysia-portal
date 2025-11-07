@@ -34,6 +34,7 @@ wheels/
 *.log
 logs/
 wolf-daemon/logs/*.log
+nerve_commands.jsonl
 
 # User data
 user_docs/
