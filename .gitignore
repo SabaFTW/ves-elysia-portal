@@ -55,3 +55,15 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# Node modules
+node_modules/
+bot/node_modules/
+api/node_modules/
+web/node_modules/
+
+# Package locks (keep for reproducibility but don't commit dependencies)
+package-lock.json
+bot/package-lock.json
+api/package-lock.json
+web/package-lock.json

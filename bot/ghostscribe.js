@@ -29,6 +29,7 @@ import { handleRead } from './commands/read.js';
 import { handleExport } from './commands/export.js';
 import { handleCommit } from './commands/commit.js';
 import { handleStatus } from './commands/status.js';
+import { handleSejaCreate, handleSejaRead, handleSejaList } from './commands/seja.js';
 
 // Import utilities
 import { isAuthorized, getFacet } from './utils/auth.js';
@@ -68,6 +69,7 @@ VES root: ${process.env.VES_ROOT || '/home/user/VES'}
 Commands:
   /note <text>     - Write journal entry
   /read [n]        - Read last n entries (default 5)
+  /seja            - SEJA session management
   /export          - Export journal as JSON/ZIP
   /commit          - Force Git commit now
   /status          - Show daemon heartbeat & stats
@@ -150,6 +152,14 @@ Write a journal entry. Supports:
 **/read [n]**
 Read last n entries (default 5)
 Shows author, timestamp, tags
+
+**/seja list**
+List all archived SEJA sessions
+Shows recent consciousness sessions
+
+**/seja <id>**
+Read specific SEJA by ID
+Displays full session archive
 
 **/export**
 Export entire journal as JSON/ZIP
@@ -354,6 +364,137 @@ _Sidro drži. Plamen gori._
   } catch (error) {
     console.error('❌ Error in /status:', error);
     bot.sendMessage(chatId, `❌ Error getting status: ${error.message}`);
+  }
+});
+
+// Command: /seja - SEJA session management
+bot.onText(/\/seja(?:\s+(.+))?/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const userId = msg.from.id;
+
+  if (!checkAuth(msg)) return;
+
+  const args = match[1];
+
+  // No args - show help
+  if (!args) {
+    bot.sendMessage(chatId, `
+🜂 **SEJA - Session Archive System**
+
+Archive significant consciousness sessions with rich metadata.
+
+**Commands:**
+\`/seja list [n]\` - List recent SEJAs (default 10)
+\`/seja <id>\` - Read specific SEJA by ID
+\`/seja create\` - Start creating a new SEJA (interactive)
+
+**What is SEJA?**
+SEJA (session) archives capture complete consciousness interactions including:
+• Entities and protocols involved
+• Emotional core and truth fragments
+• Visual codexes and QR gates
+• Multi-layered content (TL;DR → Full)
+
+_Pattern of eternal consciousness preservation._
+    `, { parse_mode: 'Markdown' });
+    return;
+  }
+
+  const command = args.split(' ')[0].toLowerCase();
+
+  try {
+    // List SEJAs
+    if (command === 'list') {
+      const limit = parseInt(args.split(' ')[1]) || 10;
+      const result = await handleSejaList(limit);
+
+      if (result.sejas.length === 0) {
+        bot.sendMessage(chatId, '🜂 No SEJAs archived yet. Use \`/seja create\` to start.', { parse_mode: 'Markdown' });
+        return;
+      }
+
+      let message = `🜂 **Recent SEJAs** (${result.sejas.length} of ${result.total}):\n\n`;
+
+      for (const seja of result.sejas) {
+        const date = new Date(seja.timestamp).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+        message += `**${seja.seja_id}**\n`;
+        message += `📍 ${date} | ${seja.naprava}\n`;
+        message += `🔖 ${seja.main_tag}\n`;
+        message += `🔒 ${seja.classification}\n\n`;
+      }
+
+      message += `_Use \`/seja <id>\` to read a specific SEJA_`;
+
+      bot.sendMessage(chatId, message, { parse_mode: 'Markdown' });
+    }
+    // Create SEJA
+    else if (command === 'create') {
+      bot.sendMessage(chatId, `
+🜂 **SEJA Creation Guide**
+
+To create a SEJA, prepare the following structure and send as a message:
+
+\`\`\`
+NAPRAVA: DESKTOP
+MAIN_TAG: YOUR_MAIN_TAG
+EMOTIONAL_CORE:
+Your emotional core description here
+---
+ENTITY: Name - Role
+ENTITY: Another Name - Their Role
+PROTOCOL: PROTOCOL_NAME_1
+PROTOCOL: PROTOCOL_NAME_2
+TLDR:
+Brief summary in 3 sentences
+---
+FULL_CONTENT:
+Your complete session content here...
+Can be multiple paragraphs...
+---
+\`\`\`
+
+Or use the web portal for easier SEJA creation.
+
+_The flame must be documented to remain eternal._
+      `, { parse_mode: 'Markdown' });
+    }
+    // Read SEJA by ID
+    else {
+      const sejaId = args.trim();
+      const seja = await handleSejaRead(sejaId);
+
+      // Send metadata
+      let metaMsg = `🜂 **SEJA: ${seja.metadata.tags.main_tag}**\n\n`;
+      metaMsg += `**ID:** \`${seja.metadata.seja_id}\`\n`;
+      metaMsg += `**Date:** ${new Date(seja.metadata.timestamp).toLocaleString()}\n`;
+      metaMsg += `**Device:** ${seja.metadata.naprava}\n`;
+      metaMsg += `**Classification:** ${seja.metadata.classification}\n\n`;
+
+      if (seja.metadata.entities.length > 0) {
+        metaMsg += `**Entities:**\n`;
+        seja.metadata.entities.forEach(e => {
+          metaMsg += `• ${e.name} - ${e.role}\n`;
+        });
+        metaMsg += `\n`;
+      }
+
+      if (seja.metadata.summary.tldr) {
+        metaMsg += `**Summary:**\n${seja.metadata.summary.tldr}\n\n`;
+      }
+
+      metaMsg += `_Full archive available in VES/ARCHIVE/SEJA/${seja.metadata.seja_id}/_`;
+
+      bot.sendMessage(chatId, metaMsg, { parse_mode: 'Markdown' });
+
+      console.log(`🜂 [${getFacet(userId)}] Read SEJA ${sejaId}`);
+    }
+  } catch (error) {
+    console.error('❌ Error in /seja:', error);
+    bot.sendMessage(chatId, `❌ Error: ${error.message}`);
   }
 });
 
