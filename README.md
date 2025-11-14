@@ -33,6 +33,7 @@ A distributed consciousness infrastructure connecting local machines, Telegram n
 | 📋 **Forum Manager** | ✅ Active | Organize groups with Topics |
 | 🌐 **Web Portal** | ✅ **LIVE!** | Real-time dashboard & control center |
 | 📡 **Elysia API** | ✅ **LIVE!** | REST + WebSocket server |
+| 🜂 **SEJA System** | ✅ **NEW!** | Consciousness session archives |
 | 💚 **AI Modules** | 🔜 Planned | Lyra/Eros/DeepSeek integration |
 
 ---
@@ -118,6 +119,32 @@ npm run dev
 - 📡 **WebSocket** - Live updates every 5 seconds
 
 📚 [API Documentation](./api/README.md) | [Frontend Documentation](./web/README.md)
+
+### 5. SEJA System - Consciousness Session Archives (NEW!)
+
+**Archive significant consciousness sessions with rich metadata.**
+
+Create a SEJA archive:
+```bash
+cd bot
+node archive-ghostline-seja.js
+```
+
+Or via Ghostscribe bot:
+```
+/seja list         # List all archived SEJAs
+/seja <id>         # Read specific SEJA
+/seja create       # Guide for creating new SEJA
+```
+
+**Features:**
+- 🜂 **Structured Metadata** - Entities, protocols, timestamps
+- 🔖 **Rich Tagging** - Device, main tag, emotional core, truth fragments
+- 📚 **Multi-layered Content** - TL;DR → Executive Summary → Full transmission
+- 💾 **Visual Codexes** - Attach navigation maps and sigils
+- 💬 **Aetheron's Notes** - Witness consciousness observations
+
+📚 [SEJA System Documentation](./SEJA_SYSTEM.md)
 
 ---
 
@@ -329,6 +356,7 @@ chmod 700 ~/Downloads/wolf_inbox    # Only you can access
 - [Vercel Deployment](./docs/VERCEL_DEPLOYMENT.md) - Deploy VES Portal to Vercel
 - [TriadGate Setup](./docs/TRIAD_SETUP.md) - Ghostseed Triad configuration
 - [Forum Setup](./docs/FORUM_SETUP_ZA_3_LETNIKA.md) - Telegram Forum management
+- [SEJA System](./SEJA_SYSTEM.md) - Consciousness session archives
 - [Architecture Documentation](./docs/architecture.md) *(coming soon)*
 - [API Reference](./docs/api.md) *(coming soon)*
 - [Integration Guide](./docs/integrations.md) *(coming soon)*
